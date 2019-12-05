@@ -6,7 +6,7 @@ const app = express()
 
 app.use(express.json())
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     console.log("ip:", req.ip)
 
     res.json({
@@ -16,7 +16,17 @@ app.get("/", (req, res) => {
 
 //getting all users
 app.get("/api/users", (req, res) => {
-    res.json(db)
+    db.find()
+    .then( user => {
+        res
+            .status(200)
+            .json(user)
+    })
+    .catch(() => {
+        res
+            .status(404)
+            .json({ error: "Unable to determine users"})
+    })
 })
 
 const port = 8080
