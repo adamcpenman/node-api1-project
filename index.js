@@ -26,10 +26,11 @@ app.get("/api/users", (req, res) => {
     .catch(() => {
         res
             .status(404)
-            .json({ error: "Unable to determine users"})
+            .json({ error: "What a tater..no hobbit by that name"})
     })
 })
 
+//user by id
 app.get("/api/users/:id", (req, res) => {
     db.findById(req.params.id)
     .then ((user) => {
@@ -40,14 +41,15 @@ app.get("/api/users/:id", (req, res) => {
     .catch(() => {
         res
             .status(404)
-            .json({ error: "User can't be found"})
+            .json({ error: "What a tater..no hobbit by that ID"})
     })
 })
 
+//creating a user via POST request
 app.post("/api/users", (req, res) => {
     if (!req.body.name || !req.body.bio) {
         return res
-                .status(400).json({ error: "Need a name and a bio"})
+                .status(400).json({ error: "Need a name and bio, precious"})
     }
 
     const newUser = {
@@ -60,6 +62,25 @@ app.post("/api/users", (req, res) => {
             .status(201)
             .json(newUser)
 })
+
+//deleting a user
+app.delete("/api/users/:id", (req, res) => {
+    const user = req.params.id;
+    db.remove()
+        .then(user => {
+         if (user) {
+             res
+                .status(404)
+                .json({ message: "The hobbit with the ID does not exist"})
+         }   else {
+             res.status(200).json("Hobbit killed by the ring");
+         }
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The hobbit lives in heaven"})
+        })
+})
+
 
 const port = 8080
 const host = "127.0.0.1"
