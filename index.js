@@ -16,8 +16,9 @@ app.get("/api", (req, res) => {
 
 //getting all users
 app.get("/api/users", (req, res) => {
+    // res.json(db)
     db.find()
-    .then( user => {
+    .then(user => {
         res
             .status(200)
             .json(user)
@@ -28,6 +29,22 @@ app.get("/api/users", (req, res) => {
             .json({ error: "Unable to determine users"})
     })
 })
+
+app.get("/api/users/:id", (req, res) => {
+    db.findById(req.params.id)
+    .then ((user) => {
+        res
+            .status(200)
+            .json(user)
+    })
+    .catch(() => {
+        res
+            .status(404)
+            .json({ error: "User can't be found"})
+    })
+})
+
+
 
 const port = 8080
 const host = "127.0.0.1"
