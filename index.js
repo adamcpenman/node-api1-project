@@ -44,7 +44,22 @@ app.get("/api/users/:id", (req, res) => {
     })
 })
 
+app.post("/api/users", (req, res) => {
+    if (!req.body.name || !req.body.bio) {
+        return res
+                .status(400).json({ error: "Need a name and a bio"})
+    }
 
+    const newUser = {
+        name: req.body.name,
+        bio: req.body.bio,
+    }
+
+    db.insert(newUser)
+        res
+            .status(201)
+            .json(newUser)
+})
 
 const port = 8080
 const host = "127.0.0.1"
